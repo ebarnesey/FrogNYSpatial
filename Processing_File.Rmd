@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r libs, message = FALSE, warning=FALSE}
+
+# Note to madison: you will need to import all of these libraries but that should be pretty easy
 library(dplyr)
 library(tidyverse)
 library(gridExtra)
@@ -49,11 +51,14 @@ Reading in odor complaints file
 ```{r}
 odor_o <- read_csv("Read_Files/Odor_Complaints.csv") 
 
+# making a table that is a summary of the number of complaints per zipcode
 odor.zip.f <- odor_o %>% 
   mutate(tic = 1) %>% 
   group_by(Incident.Zip) %>% 
     summarise(num.complaints = sum(tic))
 
+# writing this table into the Write_Files folder
+write.csv(odor.zip.f, "Write_Files/Num_Complaints_By_Zipcode.csv")
 
 ```
 
