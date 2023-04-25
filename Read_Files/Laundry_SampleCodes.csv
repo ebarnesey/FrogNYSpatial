@@ -1,0 +1,17 @@
+Sample,SampleType,FabricType,Detergent,Softener,ScentBoostBeads
+VCP_L00_359401,Blank,None,None,None,None
+VCP_L01_359419,Blank,CottonPoly,None,None,None
+VCP_L02_359431,Sample,CottonPoly,Unscented,UnscentedLiq,None
+VCP_L03_359410,Sample,CottonPoly,Normal,UnscentedLiq,None
+VCP_L04_359466,Sample,CottonPoly,Normal,ScentedLiq,None
+VCP_L05_359402,Sample,CottonPoly,Normal,Sheets,None
+VCP_L07_359414,Blank,None,None,None,None
+VCP_L08_359403,Sample,CottonPoly,Scented,ScentedLiq,None
+VCP_L09_359464,Sample,CottonPoly,Scented,ScentedLiq,Downy
+VCP_L10_359449,Sample,Cotton,Scented,ScentedLiq,Downy
+VCP_L11_359418,Sample,Polyester,Scented,ScentedLiq,Downy
+VCP_L12_359419,Sample,Clothes,Scented,ScentedLiq,Downy
+VCP_L13_359477,Fail,CottonPoly,Eco,EcoSheets,None
+VCP_L14_359454,Sample,CottonPoly,Eco,EcoSheets,None
+VCP_L15_359446,Sample,CottonPoly,Eco,EcoSheets,Eco
+VCP_L16_358492,Blank,None,None,None,None

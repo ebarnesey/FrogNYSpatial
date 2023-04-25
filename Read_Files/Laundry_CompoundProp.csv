@@ -1,0 +1,43 @@
+Name,Formula,OH_half_hrs,O3_half_hrs
+"p_Butanoic acid, 2-methyl-, ethyl ester",C7H14O2,33,na
+"p_Pentanoic acid, 2-methyl-, ethyl ester",C8H16O2,24.22,na
+p_a-Pinene,C10H16,1.4,0.638333333
+p_camphene,C10H16,2.3,24.2
+p_B-Myrcene,C10H16,0.66,0.616666667
+"p_Acetic acid, hexyl ester",C8H16O2,17.2,na
+p_D-Limonene,C10H16,0.88,0.622166667
+"p_7-Octen-2-ol, 2,6-dimethyl-",C10H20O,3.45,22.9
+" p_3-Cyclohexen-1-carboxaldehyde, 3,4-dimethyl-",C9H14O,0.9,0.228333333
+p_Linalool,C10H18O,1.07,0.637
+p_Nonanal,C9H18O,3.88,na
+"p_3-Cyclohexen-1-carboxaldehyde, 3,4-dimethyl-",C9H14O,0.9,0.228333333
+"p_Cyclopentasiloxane, decamethyl-",C10H30O5Si5,85.79,na
+"p_Acetic acid, phenylmethyl ester",C9H10O2,20.11,na
+p_Decanal,C10H20O,3.722,na
+unk_20230412_10.13_43_71_69_115,,,
+p_4-(2-Methoxypropan-2-yl)-1-methylcyclohex-1-ene,C11H20O,1.25,0.64
+"p_2,6-Octadien-1-ol, 3,7-dimethyl-, (Z)-",C10H18O,0.713,0.32
+unk_20230412_10.76_93_135_136,,,
+p_Bornyl acetate,C12H20O2,16.6,na
+p_4-tert-Butylcyclohexyl acetate,C12H22O2,8.85,na
+p_4-tert-Butylcyclohexyl acetate2,C12H22O2,8.85,na
+p_Citronellol acetate,C12H22O2,1.335,0.64
+"p_Undecanal, 2-methyl-",C12H24O,3.44,na
+p_4-tert-Butylcyclohexyl acetate_r,C12H22O2,8.85,na
+p_Diphenyl ether,C12H10O,13.04,na
+"p_4,7-Methano-1H-inden-6-ol, 3a,4,5,6,7,7a-hexahydro-, acetate",C12H16O2,1.907,1.375
+p_Ionone,C13H20O,0.538,0.161166667
+"p_Naphthalene, 2-methoxy-",C11H10O,0.639,na
+p_3-(4-Isopropylphenyl)-2-methylpropionaldehyde,C13H18O,,
+p_a Isomethyl ionone,C14H22O,0.752,0.436666667
+p_trans-B-Ionone,C13H20O,0.856,0.597
+"p_1-Penten-3-one, 1-(2,6,6-trimethyl-2-cyclohexen-1-yl)-",C14H22O,0.849,0.623
+p_Lilial,C14H0O,3.885,na
+"p_2-Buten-1-ol, 2-ethyl-4-(2,2,3-trimethyl-3-cyclopenten-1-yl)-",C14H24O,0.701,0.528333333
+unk_20230412_13.67_66_43_221,,,
+"p_B-Ionone, methyl-",C14H22O,0.54,0.435
+unk_20230412_14.03_66_71_43,,,
+"p_(7a-Isopropenyl-4,5-dimethyloctahydroinden-4-yl)methanol",C15H26O,1.921,24.2
+"p_(7a-Isopropenyl-4,5-dimethyloctahydroinden-4-yl)methanol_2",C15H26O,1.921,24.2
+p_C15H22O2,,,
+"p_Octanal, 2-(phenylmethylene)-",C15H20O,2.335,12.6

@@ -11,7 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r libs, message = FALSE, warning=FALSE}
 
-# Note to madison: you will need to import all of these libraries but that should be pretty easy
+# Note to madison: you will need to import all of these libraries 
+
+
+#install.packages("dplyr")
+
 library(dplyr)
 library(tidyverse)
 library(gridExtra)
@@ -45,6 +49,9 @@ library(Hmisc)
 library(plot.matrix)
 #install.packages("installr")
 #library(installr)
+library(CHNOSZ)
+
+
 ```
 
 Reading in odor complaints file
@@ -59,6 +66,237 @@ odor.zip.f <- odor_o %>%
 
 # writing this table into the Write_Files folder
 write.csv(odor.zip.f, "Write_Files/Num_Complaints_By_Zipcode.csv")
+
+```
+
+## Reading in and plotting preliminary laundry SVOC data
+
+```{r}
+laun_o <- read_csv("Read_Files/Preliminary_SVOC_Data.csv") 
+
+laun.p <- laun_o %>% 
+  dplyr::mutate(Cnum = NA, Hnum = NA, Onum = NA)
+
+
+
+for(i in 1:nrow(laun.p)){
+  
+  #i = 1
+  form.i <- laun.p$Formula[i]
+  m.t <- makeup(form.i)
+  
+  laun.p$Cnum[i] <- m.t["C"]
+  laun.p$Hnum[i] <- m.t["H"]
+  laun.p$Onum[i] <- m.t["O"]
+  
+  if(is.na(m.t["O"])){
+    laun.p$Onum[i] <- 0
+  }
+  
+}
+
+laun.p <- laun.p %>% 
+  mutate(OSc = (2*(Onum/Cnum))-(Hnum/Cnum)) %>% 
+  mutate(Frag_UF_ratio = PA_Frag/PA_unFrag)
+
+
+laun.p %>% 
+  filter(BondingInfo!= "R.3") %>% 
+  ggplot(aes(x = Cnum, y = OSc, shape = BondingInfo, 
+             size = PA_Frag, color = Frag_UF_ratio))+
+  geom_point()+
+  #facet_grid(rows = vars(File_num))+
+  scale_x_reverse()+
+  xlab("Carbon Number")+
+  ylab("Average Carbon Oxidation State")+
+  scale_color_viridis_c()+
+  scale_shape_manual(values = c(0,1,2,7,9,5,6))+
+  #scale_color_discrete(name = "Library")+
+  theme_bw()
+
+
+
+laun.p %>% 
+  arrange((Onum)) %>% 
+  arrange(desc(Cnum)) %>% 
+  mutate(Onum.f = as.factor(Onum)) %>% 
+  ggplot(aes(x = Cnum, y = PA_Frag, fill = Onum.f))+
+  geom_col()+
+  scale_x_continuous(breaks = seq(8, 17, by = 1))+
+  scale_fill_viridis_d()
+
+p.1 <- laun.p %>% 
+  arrange((Frag_UF_ratio)) %>% 
+  arrange(desc(Cnum)) %>% 
+  mutate(Onum.f = as.factor(Onum)) %>% 
+  ggplot(aes(x = Cnum, y = PA_Frag, fill = Frag_UF_ratio))+
+  geom_col()+
+  scale_x_continuous(breaks = seq(8, 17, by = 1))+
+  scale_fill_viridis_c(name = "Fragranced Product/ \nUnfragranced Product\nEnhancement Factor")+
+  xlab("Carbon Number")+
+  ylab("Compound Signal- Peak Area")+
+  theme_bw()
+
+
+png(file="Figures/Product_Summary.png",
+width=6, height=4, units="in", res=400)
+p.1
+dev.off()
+
+
+
+
+```
+
+
+Preliminary laundry analysis
+```{r laundry}
+
+laund.samp <- read_csv("Read_Files/Laundry_SampleCodes.csv")
+
+laund.prop <- read_csv("Read_Files/Laundry_CompoundProp.csv") 
+
+laund.sig <- read_csv("Read_Files/Laundry_SampleSignal.csv") 
+
+laund.sig.l <- laund.sig %>% 
+  gather(key = "Sample", value = "Area", -c("RetentionIndex", "Name"))
+
+laund.sig.l.p <- laund.sig.l %>% 
+  left_join(laund.prop) %>% 
+  left_join(laund.samp) %>% 
+  filter(SampleType != "Fail")
+
+detergent.test <- laund.sig.l.p %>% 
+  group_by(Detergent, Name) %>% 
+  summarise(MeanArea = mean(Area), SDArea = sd(Area)) 
+  
+  
+for(i in 1:nrow(laund.prop)){
+  #i = 3
+  comp.t <- laund.prop$Name[i]
+  
+  detergent.test.t <- detergent.test %>% 
+    filter(Name == comp.t)
+  
+  
+  plot.p <- detergent.test.t %>% 
+    ggplot(aes(x = Detergent, y = MeanArea))+
+    geom_bar(stat = "identity")+
+    geom_errorbar(aes(ymin = (MeanArea-SDArea), 
+                      ymax = (MeanArea+SDArea)),
+                  width = .2, position= position_dodge(.9))+
+    ggtitle(comp.t)
+  
+  print(plot.p)
+  
+}
+
+softener.test <- laund.sig.l.p %>% 
+  group_by(Softener, Name) %>% 
+  summarise(MeanArea = mean(Area), SDArea = sd(Area)) 
+  
+  
+for(i in 1:nrow(laund.prop)){
+  #i = 3
+  comp.t <- laund.prop$Name[i]
+  
+  softener.test.t <- softener.test %>% 
+    filter(Name == comp.t)
+  
+  
+  plot.p <- softener.test.t %>% 
+    ggplot(aes(x = Softener, y = MeanArea))+
+    geom_bar(stat = "identity")+
+    geom_errorbar(aes(ymin = (MeanArea-SDArea), 
+                      ymax = (MeanArea+SDArea)),
+                  width = .2, position= position_dodge(.9))+
+    ggtitle(comp.t)
+  
+  print(plot.p)
+  
+}
+
+boost.test <- laund.sig.l.p %>% 
+  group_by(ScentBoostBeads, Name) %>% 
+  summarise(MeanArea = mean(Area), SDArea = sd(Area)) 
+  
+  
+for(i in 1:nrow(laund.prop)){
+  #i = 3
+  comp.t <- laund.prop$Name[i]
+  
+  boost.test.t <- boost.test %>% 
+    filter(Name == comp.t)
+  
+  
+  plot.p <- boost.test.t %>% 
+    ggplot(aes(x = ScentBoostBeads, y = MeanArea))+
+    geom_bar(stat = "identity")+
+    geom_errorbar(aes(ymin = (MeanArea-SDArea), 
+                      ymax = (MeanArea+SDArea)),
+                  width = .2, position= position_dodge(.9))+
+    ggtitle(comp.t)
+  
+  print(plot.p)
+  
+}
+
+
+fab.test <- laund.sig.l.p %>% 
+  group_by(FabricType, Name) %>% 
+  summarise(MeanArea = mean(Area), SDArea = sd(Area)) 
+  
+  
+for(i in 1:nrow(laund.prop)){
+  #i = 3
+  comp.t <- laund.prop$Name[i]
+  
+  fab.test.t <- fab.test %>% 
+    filter(Name == comp.t)
+  
+  
+  plot.p <- fab.test.t %>% 
+    ggplot(aes(x = FabricType, y = MeanArea))+
+    geom_bar(stat = "identity")+
+    geom_errorbar(aes(ymin = (MeanArea-SDArea), 
+                      ymax = (MeanArea+SDArea)),
+                  width = .2, position= position_dodge(.9))+
+    ggtitle(comp.t)
+  
+  print(plot.p)
+  
+}
+
+
+
+```
+
+```{r}
+
+laund.sig.l.p.scented <- laund.sig.l.p %>% 
+  filter(ScentBoostBeads == "Downy") %>% 
+  group_by(Name) %>% 
+  summarise(AvgArea = mean(Area, na.rm = TRUE)) %>% 
+  left_join(laund.prop)
+
+laund.sig.l.p.scented %>% 
+  ggplot(aes(x = Formula, y = AvgArea, fill = O3_half_hrs))+
+  geom_bar(stat = "identity")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+laund.sig.l.p.unscented <- laund.sig.l.p %>% 
+  filter(Detergent == "Unscented") %>% 
+  group_by(Name) %>% 
+  summarise(AvgArea = mean(Area, na.rm = TRUE)) %>% 
+  left_join(laund.prop)
+
+laund.sig.l.p.unscented %>% 
+  ggplot(aes(x = Formula, y = AvgArea, fill = O3_half_hrs))+
+  geom_bar(stat = "identity")+
+  theme_bw()+
+  ylim(0, 100000000)+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
